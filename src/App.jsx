@@ -5,13 +5,13 @@ import ProjectsSidebar from "./components/ProjectSidebar.jsx";
 import NewProject from "./components/NewProject.jsx"
 
 function App() {
-  const [projectState, setProjectState] = useState({
+  const [projectState, setProjectsState] = useState({
     selectedProjectId: undefined,
     projects: [],
   });
 
   function handleStartAddProject() {
-    setProjectState(prevState => {
+    setProjectsState(prevState => {
       return {
         ...prevState,
         selectedProjectId: null,
@@ -19,10 +19,26 @@ function App() {
     });
   }
 
+  function handleAddProject(projectData) {
+    setProjectsState(prevState => {
+      const newProject = {
+        ...projectData,
+        id: Math.random(),
+      };
+
+      return {
+        ...prevState,
+        projects: [...prevState.projects, newProject],
+      };
+    });
+  }
+
+  console.log(projectState);
+
   let content;
 
   if (projectState.selectedProjectId === null) {
-    content = <NewProject />
+    content = <NewProject onAdd={handleAddProject} />
   } else if (projectState.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />
   }
